@@ -1,11 +1,25 @@
-import { useState, useEffect } from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Filter, Grid3x3, Download, Printer, Plus, MoreVertical } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
-import { useToast } from "@/hooks/use-toast";
-import { format } from "date-fns";
+import {useState, useEffect} from "react";
+import {Button} from "@/components/ui/button";
+import {Input} from "@/components/ui/input";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import {
+  Filter,
+  Grid3x3,
+  Download,
+  Printer,
+  Plus,
+  MoreVertical,
+} from "lucide-react";
+import {supabase} from "@/integrations/supabase/client";
+import {useToast} from "@/hooks/use-toast";
+import {format} from "date-fns";
 import AddAffiliateDialog from "@/components/AddAffiliateDialog";
 import {
   DropdownMenu,
@@ -15,7 +29,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 const Affiliates = () => {
-  const { toast } = useToast();
+  const {toast} = useToast();
   const [affiliates, setAffiliates] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -24,10 +38,10 @@ const Affiliates = () => {
 
   const fetchAffiliates = async () => {
     try {
-      const { data, error } = await supabase
+      const {data, error} = await supabase
         .from("affiliates")
         .select("*")
-        .order("date_added", { ascending: false });
+        .order("date_added", {ascending: false});
 
       if (error) throw error;
       setAffiliates(data || []);
@@ -44,6 +58,7 @@ const Affiliates = () => {
 
   useEffect(() => {
     fetchAffiliates();
+    console.log("test netlfy");
   }, []);
 
   const handleEdit = (affiliate: any) => {
@@ -55,13 +70,10 @@ const Affiliates = () => {
     if (!confirm("Are you sure you want to delete this affiliate?")) return;
 
     try {
-      const { error } = await supabase
-        .from("affiliates")
-        .delete()
-        .eq("id", id);
+      const {error} = await supabase.from("affiliates").delete().eq("id", id);
 
       if (error) throw error;
-      toast({ title: "Affiliate deleted successfully" });
+      toast({title: "Affiliate deleted successfully"});
       fetchAffiliates();
     } catch (error: any) {
       toast({
@@ -81,7 +93,9 @@ const Affiliates = () => {
 
   const filteredAffiliates = affiliates.filter(
     (affiliate) =>
-      affiliate.affiliate_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      affiliate.affiliate_name
+        ?.toLowerCase()
+        .includes(searchTerm.toLowerCase()) ||
       affiliate.company?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       affiliate.email?.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -92,7 +106,10 @@ const Affiliates = () => {
         <div className="mb-6">
           <h1 className="text-3xl font-bold mb-2">Affiliate Partners</h1>
           <p className="text-muted-foreground">
-            Affiliate partners are other professionals who refer new leads and clients to you. They are often Mortgage Brokers, Realtors, and Auto Dealers, whose business depends upon having clients with good credit.
+            Affiliate partners are other professionals who refer new leads and
+            clients to you. They are often Mortgage Brokers, Realtors, and Auto
+            Dealers, whose business depends upon having clients with good
+            credit.
           </p>
         </div>
 
@@ -121,8 +138,7 @@ const Affiliates = () => {
               setEditingAffiliate(null);
               setDialogOpen(true);
             }}
-            className="bg-green-600 hover:bg-green-700"
-          >
+            className="bg-green-600 hover:bg-green-700">
             <Plus className="h-4 w-4 mr-2" />
             Add New Affiliate
           </Button>
@@ -161,8 +177,11 @@ const Affiliates = () => {
                 </TableRow>
               ) : filteredAffiliates.length === 0 ? (
                 <TableRow>
-                  <TableCell colSpan={9} className="text-center py-8 text-muted-foreground">
-                    No affiliates found. Click "Add New Affiliate" to get started.
+                  <TableCell
+                    colSpan={9}
+                    className="text-center py-8 text-muted-foreground">
+                    No affiliates found. Click "Add New Affiliate" to get
+                    started.
                   </TableCell>
                 </TableRow>
               ) : (
@@ -172,15 +191,23 @@ const Affiliates = () => {
                       {affiliate.affiliate_name}
                     </TableCell>
                     <TableCell>{affiliate.company || "-"}</TableCell>
-                    <TableCell className="text-primary">{affiliate.email}</TableCell>
+                    <TableCell className="text-primary">
+                      {affiliate.email}
+                    </TableCell>
                     <TableCell className="text-primary">0 clients</TableCell>
                     <TableCell>{affiliate.phone || "-"}</TableCell>
                     <TableCell>
                       {format(new Date(affiliate.date_added), "MM/dd/yyyy")}
                     </TableCell>
                     <TableCell>
-                      <span className={affiliate.status === "active" ? "text-green-600" : "text-gray-500"}>
-                        {affiliate.status.charAt(0).toUpperCase() + affiliate.status.slice(1)}
+                      <span
+                        className={
+                          affiliate.status === "active"
+                            ? "text-green-600"
+                            : "text-gray-500"
+                        }>
+                        {affiliate.status.charAt(0).toUpperCase() +
+                          affiliate.status.slice(1)}
                       </span>
                     </TableCell>
                     <TableCell>
@@ -188,8 +215,7 @@ const Affiliates = () => {
                         variant="outline"
                         size="sm"
                         onClick={() => handleSendLogin(affiliate)}
-                        className="border-green-600 text-green-600 hover:bg-green-50"
-                      >
+                        className="border-green-600 text-green-600 hover:bg-green-50">
                         Send Login
                       </Button>
                     </TableCell>
@@ -201,13 +227,13 @@ const Affiliates = () => {
                           </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
-                          <DropdownMenuItem onClick={() => handleEdit(affiliate)}>
+                          <DropdownMenuItem
+                            onClick={() => handleEdit(affiliate)}>
                             Edit
                           </DropdownMenuItem>
                           <DropdownMenuItem
                             onClick={() => handleDelete(affiliate.id)}
-                            className="text-destructive"
-                          >
+                            className="text-destructive">
                             Delete
                           </DropdownMenuItem>
                         </DropdownMenuContent>

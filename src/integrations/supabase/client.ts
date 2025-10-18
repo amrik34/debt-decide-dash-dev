@@ -2,8 +2,21 @@
 import { createClient } from '@supabase/supabase-js';
 import type { Database } from './types';
 
-const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
-const SUPABASE_PUBLISHABLE_KEY = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
+const PROJECT_ID = import.meta.env.VITE_SUPABASE_PROJECT_ID;
+const SUPABASE_URL =
+  import.meta.env.VITE_SUPABASE_URL || (PROJECT_ID ? `https://${PROJECT_ID}.supabase.co` : undefined);
+const SUPABASE_PUBLISHABLE_KEY =
+  import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY || import.meta.env.VITE_SUPABASE_ANON_KEY;
+
+// Fail fast with a clear error if required env variables are missing
+if (!SUPABASE_URL || !SUPABASE_PUBLISHABLE_KEY) {
+  // Surface which value is missing without leaking secrets
+  // eslint-disable-next-line no-console
+  console.error("Backend env missing:", { hasUrl: !!SUPABASE_URL, hasKey: !!SUPABASE_PUBLISHABLE_KEY });
+  throw new Error(
+    "Backend configuration missing. Please refresh the preview. If it persists, open Backend to verify keys."
+  );
+}
 
 // Import the supabase client like this:
 // import { supabase } from "@/integrations/supabase/client";

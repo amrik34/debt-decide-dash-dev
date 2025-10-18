@@ -24,6 +24,7 @@ import Everything from "./pages/Everything";
 import Dashboard from "./pages/Dashboard";
 import AffiliatePaymentsAffiliates from "./pages/AffiliatePaymentsAffiliates";
 import AffiliatePaymentsCommissionSettings from "./pages/AffiliatePaymentsCommissionSettings";
+import PdfEditor from "./pages/PdfEditor";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -58,6 +59,7 @@ const App = () => (
             <Route path="/my-company/affiliate-payments/affiliates" element={<AffiliatePaymentsAffiliates />} />
             <Route path="/my-company/affiliate-payments/commission-settings" element={<AffiliatePaymentsCommissionSettings />} />
             <Route path="/my-company/affiliate-payments/advanced-settings" element={<AffiliatePaymentsCommissionSettings />} />
+            <Route path="/pdf-editor" element={<PdfEditor />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>

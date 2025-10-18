@@ -6,6 +6,7 @@ const navItems = [
   { name: "Dashboard", path: "/dashboard" },
   { name: "Clients", path: "/clients" },
   { name: "Schedule", path: "/schedule" },
+  { name: "PDF Editor", path: "/pdf-editor" },
   { name: "Billing & Payments", path: "/billing" },
   { name: "Letter Library", path: "/letter-library" },
   { name: "Affiliates", path: "/affiliates" },
